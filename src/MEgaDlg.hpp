@@ -18,6 +18,8 @@ using namespace EGA;
 // WM_EGA_DO_PRINT is defined in EgaBridge.hpp (included above), since
 // EgaBridge itself now posts it from QueuePrintText().
 
+#define WM_EGA_FINISH (WM_APP + 101)
+
 class MEgaDlg;
 extern HWND s_hwndEga;
 extern HWND g_hMainWnd;

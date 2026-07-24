@@ -553,7 +553,6 @@
 #define ID_OPENHISTORYID                    276
 #define ID_OPENREADMEPTB                    277
 #define ID_OPENHISTORYPTB                   278
-#define ID_EGAFINISH                        279
 #define ID_OPENREADMEES                     280
 #define ID_OPENHISTORYES                    281
 #define ID_INTERNALTEST                     282

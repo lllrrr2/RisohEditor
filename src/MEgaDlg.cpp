@@ -15,7 +15,7 @@ bool EGA_dialog_input(char *buf, size_t buflen)
 	{
 		// 特殊なメッセージを投函する。
 		::PostMessageW(s_hwndEga, WM_EGA_DO_PRINT, 0, 0);
-		::PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
+		::PostMessageW(g_hMainWnd, WM_EGA_FINISH, 0, 0);
 		return true;
 	}
 
@@ -235,7 +235,7 @@ void MEgaDlg::OnDestroy(HWND hwnd)
 	MTRACEA("%s\n", __FUNCTION__);
 
 	// 終了前に特殊なメッセージを投函する。
-	PostMessageW(g_hMainWnd, WM_COMMAND, ID_EGAFINISH, 0);
+	PostMessageW(g_hMainWnd, WM_EGA_FINISH, 0, 0);
 
 	// EGAスレッドを終了する。
 	EgaBridge::StopInteractive(true);

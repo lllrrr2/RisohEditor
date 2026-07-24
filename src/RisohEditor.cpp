@@ -878,6 +878,36 @@ LRESULT MMainWnd::OnRadDblClick(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+// WM_EGA_FINISH
+LRESULT MMainWnd::OnEgaFinish(HWND hwnd, WPARAM wParam, LPARAM lParam)
+{
+	BOOL bModifiedOld = s_bModified;
+	DoRefreshTV(hwnd, TRUE);
+	DoRefreshIDList(hwnd);
+	s_bModified = bModifiedOld;
+
+	if (g_RES_select_type != BAD_TYPE ||
+		g_RES_select_name != BAD_TYPE ||
+		g_RES_select_lang != BAD_LANG)
+	{
+		EntrySet found;
+		g_res.search(found, ET_LANG, g_RES_select_type, g_RES_select_name, g_RES_select_lang);
+
+		for (auto e : found)
+		{
+			SelectTV(e, FALSE);
+			return 0;
+		}
+
+		g_RES_select_type = BAD_TYPE;
+		g_RES_select_name = BAD_NAME;
+		g_RES_select_lang = BAD_LANG;
+	}
+
+	PostUpdateArrow(hwnd);
+	return 0;
+}
+
 // extract an icon as an *.ico file
 void MMainWnd::OnExtractIcon(HWND hwnd)
 {
@@ -9188,9 +9218,6 @@ void MMainWnd::OnGoToLine(HWND hwnd) {
 // WM_COMMAND
 void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
-	if (!::IsWindowEnabled(hwnd) && id != ID_EGAFINISH)
-		return;
-
 	if (m_hCodeEditor == hwndCtl)
 	{
 		switch (codeNotify)
@@ -9697,38 +9724,6 @@ void MMainWnd::OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 		break;
 	case ID_OPENHISTORYPTB:
 		OnOpenLocalFile(hwnd, L"ChangeLog_pt_BR.txt");
-		break;
-	case ID_EGAFINISH:
-		{
-			BOOL bModifiedOld = s_bModified;
-			DoRefreshTV(hwnd, TRUE);
-			DoRefreshIDList(hwnd);
-			s_bModified = bModifiedOld;
-		}
-		if (g_RES_select_type != BAD_TYPE ||
-			g_RES_select_name != BAD_TYPE ||
-			g_RES_select_lang != BAD_LANG)
-		{
-			EntrySet found;
-			g_res.search(found, ET_LANG, g_RES_select_type, g_RES_select_name, g_RES_select_lang);
-
-			for (auto e : found)
-			{
-				SelectTV(e, FALSE);
-				break;
-			}
-
-			g_RES_select_type = BAD_TYPE;
-			g_RES_select_name = BAD_NAME;
-			g_RES_select_lang = BAD_LANG;
-		}
-		// NOTE: EnableWindow(g_hMainWnd, TRUE) used to be called here, but
-		// nothing in the EGA dialog code path ever disables g_hMainWnd, so
-		// this was a vestigial no-op left over from an earlier design.
-		// Disabling the main window while the EGA console is open is not
-		// an intended behavior, so it has been removed rather than paired
-		// with a matching EnableWindow(g_hMainWnd, FALSE).
-		PostUpdateArrow(hwnd);
 		break;
 	case ID_INTERNALTEST:
 		OnInternalTest(hwnd);
@@ -11785,6 +11780,7 @@ MMainWnd::WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		DO_MESSAGE(MYWM_COMPLEMENT, OnComplement);
 		DO_MESSAGE(MYWM_UPDATEARROW, OnUpdateArrow);
 		DO_MESSAGE(MYWM_RADDBLCLICK, OnRadDblClick);
+		DO_MESSAGE(WM_EGA_FINISH, OnEgaFinish);
 
 	default:
 		return DefaultProcDx();
