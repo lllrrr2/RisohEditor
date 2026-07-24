@@ -4,6 +4,7 @@
     - MConstantDlg telah disempurnakan.
     - Peningkatan pada MAddCtrlDlg, MCtrlPropDlg, dan MDlgPropDlg.
     - Memperbaiki string sumber daya bahasa Portugis yang hilang.
+    - IDD_EGA dikurangi.
 - v.6.0.7 (2026-07-24)
     - Memperbaiki masalah lambatnya respons gulir roda pada tampilan sumber.
     - Memperbaiki pembuangan (dumping) gaya DIALOG.
