@@ -64,4 +64,5 @@ protected:
 	void OnSize(HWND hwnd, UINT state, int cx, int cy);
 	void OnEgaGetInput(HWND hwnd);
 	void OnEgaPrint(HWND hwnd);
+	void MEgaDlg::OnGetMinMaxInfo(HWND hwnd, LPMINMAXINFO lpMinMaxInfo);
 };

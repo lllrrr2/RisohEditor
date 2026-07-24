@@ -350,6 +350,12 @@ void MEgaDlg::OnEgaPrint(HWND hwnd)
 	::SetCursor(::LoadCursorW(NULL, IDC_ARROW));
 }
 
+void MEgaDlg::OnGetMinMaxInfo(HWND hwnd, LPMINMAXINFO lpMinMaxInfo)
+{
+	lpMinMaxInfo->ptMinTrackSize.x = 380;
+	lpMinMaxInfo->ptMinTrackSize.y = 210;
+}
+
 INT_PTR CALLBACK
 MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -362,6 +368,7 @@ MEgaDlg::DialogProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	HANDLE_MSG(hwnd, WM_MOVE, OnMove);
 	HANDLE_MSG(hwnd, WM_SIZE, OnSize);
 	HANDLE_MSG(hwnd, WM_DESTROY, OnDestroy);
+	HANDLE_MSG(hwnd, WM_GETMINMAXINFO, OnGetMinMaxInfo);
 	case WM_EGA_DO_GETINPUT: // 入力を取得する。
 		OnEgaGetInput(hwnd);
 		return 0;
